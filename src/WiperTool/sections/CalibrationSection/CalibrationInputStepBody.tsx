@@ -117,7 +117,7 @@ export function CalibrationInputStepBody() {
           />
         </FormContainer>
         <CalibrationPadWrapper>
-          <CalibrationPadPreview />
+          <CalibrationPadPreview withBuildVolume />
         </CalibrationPadWrapper>
       </StepBodyContent>
     </StepBody>

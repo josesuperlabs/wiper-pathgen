@@ -1,8 +1,9 @@
 import { createMemo } from 'solid-js';
+import type { PrinterKey } from '@/WiperTool/domain/printers';
 import { createLocalStorageStore } from '@/WiperTool/lib/createLocalStorageStore';
 import type { Point, Point3D } from '@/WiperTool/lib/geometry';
 
-const CALIBRATION_VERSION = 'v1';
+const CALIBRATION_VERSION = 'v2';
 
 type CalibrationState = {
   x: number | undefined;
@@ -10,20 +11,47 @@ type CalibrationState = {
   z: number | undefined;
 };
 
-export function createCalibrationStore() {
-  const initialState: CalibrationState = {
-    x: undefined,
-    y: undefined,
-    z: undefined,
-  };
+type CalibrationStateByPrinter = Partial<Record<PrinterKey, CalibrationState>>;
 
-  const [state, set] = createLocalStorageStore<CalibrationState>(
+const createEmptyCalibrationState = (): CalibrationState => ({
+  x: undefined,
+  y: undefined,
+  z: undefined,
+});
+
+const getCalibrationStateForPrinter = (
+  stateByPrinter: CalibrationStateByPrinter,
+  printerKey: PrinterKey,
+): CalibrationState => stateByPrinter[printerKey] ?? createEmptyCalibrationState();
+
+export function createCalibrationStore(getPrinterKey: () => PrinterKey) {
+  const [stateByPrinter, setStateByPrinter] = createLocalStorageStore<CalibrationStateByPrinter>(
     `app-calibration-${CALIBRATION_VERSION}`,
-    initialState,
+    {},
   );
 
+  const state: CalibrationState = {
+    get x() {
+      return getCalibrationStateForPrinter(stateByPrinter, getPrinterKey()).x;
+    },
+    get y() {
+      return getCalibrationStateForPrinter(stateByPrinter, getPrinterKey()).y;
+    },
+    get z() {
+      return getCalibrationStateForPrinter(stateByPrinter, getPrinterKey()).z;
+    },
+  };
+
   const actions = {
-    setCalibration: set,
+    setCalibration<K extends keyof CalibrationState>(key: K, value: CalibrationState[K]) {
+      const printerKey = getPrinterKey();
+
+      setStateByPrinter(printerKey, (currentCalibration) => ({
+          ...createEmptyCalibrationState(),
+          ...currentCalibration,
+          [key]: value,
+        }));
+    },
   };
 
   const derived = {

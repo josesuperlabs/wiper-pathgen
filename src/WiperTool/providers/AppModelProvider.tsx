@@ -25,7 +25,7 @@ function makeAccessors<T extends object, K extends readonly (keyof T)[]>(getStat
 
 function createAppModel() {
   const settings = createSettingsStore();
-  const calibration = createCalibrationStore();
+  const calibration = createCalibrationStore(() => settings.state.printer);
   const wipingSequence = createWipingSequenceStore();
   const imports = createImportsStore();
   const tracking = createTrackingStore();

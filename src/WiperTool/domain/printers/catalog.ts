@@ -44,8 +44,9 @@ export const printerProperties: Record<string, PrinterProperties> = {
     key: PrinterKeys.PrusaXl,
     name: 'Prusa XL',
     printerId: 'XL',
+    // Keep the reachable area aligned with the XL's 360 x 360 mm bed.
     // https://github.com/prusa3d/Prusa-Firmware-Buddy/blob/b91eeda0c16a9931126ea065f2fa2bcc8a983b8d/include/marlin/Configuration_XL.h#L1067-L1085
-    bounds: CartesianRect.fromMinMax(-8000, -9000, 361000, 461000),
+    bounds: CartesianRect.fromMinMax(-8000, -9000, 361000, 361000),
     originalCleaningGCode:
       'G29 P9 X{((((first_layer_print_min[0] + first_layer_print_max[0]) / 2) < ((print_bed_min[0] + print_bed_max[0]) / 2)) ? (((first_layer_print_min[1] - 7) < -2) ? 70 : (min(print_bed_max[0], first_layer_print_min[0] + 32) - 32)) : (((first_layer_print_min[1] - 7) < -2) ? 260 : (min(print_bed_max[0], first_layer_print_min[0] + 32) - 32)))} Y{(first_layer_print_min[1] - 7)} W{32} H{7}',
     parkingZHeight: 5000,
@@ -61,7 +62,7 @@ export const printerProperties: Record<string, PrinterProperties> = {
       y: 360000,
       z: 360000,
     },
-    status: 'in-progress',
+    status: 'supported',
   },
   [PrinterKeys.PrusaMk4]: {
     key: PrinterKeys.PrusaMk4,

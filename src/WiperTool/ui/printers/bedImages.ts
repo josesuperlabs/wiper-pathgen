@@ -2,6 +2,7 @@ import type { Component, JSX } from 'solid-js';
 import type { PrinterKey } from '@/WiperTool/domain/printers';
 import { PrinterKeys } from '@/WiperTool/domain/printers';
 import { Mk52BedSvg } from './Mk52BedSvg';
+import { PrusaXlBedSvg } from './PrusaXlBedSvg';
 
 export type BedImage = {
   x: number;
@@ -25,5 +26,12 @@ export const bedImages: Partial<Record<PrinterKey, BedImage>> = {
     width: 254000,
     height: 256000,
     Svg: Mk52BedSvg,
+  },
+  [PrinterKeys.PrusaXl]: {
+    x: 0,
+    y: 0,
+    width: 360000,
+    height: 360000,
+    Svg: PrusaXlBedSvg,
   },
 };

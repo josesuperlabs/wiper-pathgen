@@ -1,3 +1,4 @@
+import { Show } from 'solid-js';
 import { Section, SectionIntro, SectionTitle } from '@/components';
 import { PrinterKeys } from '@/WiperTool/domain/printers';
 import { useSettings, useSteps } from '@/WiperTool/providers/AppModelProvider';
@@ -17,20 +18,23 @@ export function ClaibrationSection() {
           accurately.
         </p>
       </SectionIntro>
-      {(() => {
-        const printer = settings.printer();
-
-        switch (printer) {
-          case PrinterKeys.PrusaCoreOne:
-          case PrinterKeys.PrusaCoreOneL:
-          case PrinterKeys.PrusaXl:
-          case PrinterKeys.PrusaMk4:
-            return <CoreOneInstructions />;
-          default: {
-            return unreachable(printer);
+      <Show
+        when={settings.printer()}
+        keyed
+      >
+        {(printer) => {
+          switch (printer) {
+            case PrinterKeys.PrusaCoreOne:
+            case PrinterKeys.PrusaCoreOneL:
+            case PrinterKeys.PrusaXl:
+            case PrinterKeys.PrusaMk4:
+              return <CoreOneInstructions />;
+            default: {
+              return unreachable(printer);
+            }
           }
-        }
-      })()}
+        }}
+      </Show>
     </Section>
   );
 }

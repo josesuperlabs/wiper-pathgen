@@ -260,7 +260,7 @@ function CalibrationPadPreviewImpl(props: Props) {
   );
 }
 
-export function CalibrationPadPreview() {
+export function CalibrationPadPreview(props: Props) {
   const [isOpen, setIsOpen] = createSignal(false);
 
   const handleOpen = () => {
@@ -286,7 +286,7 @@ export function CalibrationPadPreview() {
         }}
         onClick={handleOpen}
       >
-        <CalibrationPadPreviewImpl />
+        <CalibrationPadPreviewImpl {...props} />
       </Container>
       <ModalPortal
         isOpen={isOpen}
@@ -297,7 +297,7 @@ export function CalibrationPadPreview() {
           aria-modal="true"
           onClick={handleClose}
         >
-          <CalibrationPadPreviewImpl />
+          <CalibrationPadPreviewImpl {...props} />
         </ModalContainer>
       </ModalPortal>
     </>
